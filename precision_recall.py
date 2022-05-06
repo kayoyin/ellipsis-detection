@@ -23,8 +23,14 @@ def spanner(d):
 
 y = open('results.txt', 'w')
 
+comet_ch = []
+comet_base = []
+ref = []
+
 for l in ['fr', 'ja', 'zh_cn']:
+# for l in ['ja']:
     for m in ['comet.', 'prism.', 'tedref.']:
+    # for m in ['tedref.']:
         thres = []
         if m == 'comet.':
             thres = [0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19]
@@ -54,10 +60,10 @@ for l in ['fr', 'ja', 'zh_cn']:
             for line in tags_file:
                 tags.append(line.strip())
 
-            indices_of_true = []
             df = pd.read_csv(open('english.tsv'), delimiter='\t', low_memory=False)
 
-            indices_of_true = df[df['Ellipsis (0 = no, 1 = yes)'] == 1].index.tolist()
+            a = df[df['Ellipsis (0 = no, 1 = yes)'] == 1].index.tolist()
+            b = df[df['Ellipsis (0 = no, 1 = yes)'] == 1]['English sentence'].tolist()
 
             # all that are labeled as correct -> newtags
             # utt: [token #1, token #2, etc]
@@ -74,12 +80,14 @@ for l in ['fr', 'ja', 'zh_cn']:
             # filter for the sentences with actual ellipses
             true_file = pd.read_csv(open('ellipsis_tag2.tsv'), delimiter='\t')
             potential_elided = true_file[l].values
+            eng_potential_elided = true_file['English sentence'].values
 
             actual_elided = {}
             for i in range(len(potential_elided)):
                 if not pd.isna(potential_elided[i]):
                     if '{{' in potential_elided[i] and '}}' in potential_elided[i]:
-                        tokenized = tokens[indices_of_true[i]]
+
+                        tokenized = tokens[a[b.index(eng_potential_elided[i])]]
                         need_tokenized = potential_elided[i]
 
                         need_tokenized_split = None
@@ -137,7 +145,7 @@ for l in ['fr', 'ja', 'zh_cn']:
                                     all_elide.append(j)
 
                             if all_elide:
-                                actual_elided[indices_of_true[i]] = all_elide.copy()
+                                actual_elided[a[b.index(eng_potential_elided[i])]] = all_elide.copy()
                         elif l == 'fr':
                             all_elide = []
                             is_elide = False
@@ -163,11 +171,17 @@ for l in ['fr', 'ja', 'zh_cn']:
                                     all_elide.append(j)
 
                             if all_elide:
-                                actual_elided[indices_of_true[i]] = all_elide.copy()
+                                actual_elided[a[b.index(eng_potential_elided[i])]] = all_elide.copy()
 
             # calculate span overlap precision and recall
             labeled_correct_span = spanner(labeled_correct)
             actual_elided_span = spanner(actual_elided)
+
+            if m == 'comet.':
+                comet_ch = labeled_correct.copy()
+            else:
+                comet_base = labeled_correct.copy()
+            ref = actual_elided
 
             correct_elided = {}
             for key in labeled_correct.keys():
@@ -324,3 +338,7 @@ for l in ['fr', 'ja', 'zh_cn']:
             #     f.write(' '.join(model) + '\n')
 
             #     f.write('\n')
+
+print('chinese', comet_ch)
+print('baseline', comet_base)
+print('ref', ref)
