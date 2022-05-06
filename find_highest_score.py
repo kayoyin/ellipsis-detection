@@ -21,21 +21,10 @@ for lang in ['fr', 'ja', 'zh_cn']:
                     elif 'Language' in row:
                         skip = True
                     else:
-                        if p[i] == 'precision':
-                            if p[i] in row and 'sentence precision' not in row and 'precision span' not in row and 'sentence precision span' not in row:
-                                if float(row.split(' ')[-1]) > top:
-                                    top = float(row.split(' ')[-1])
-                                    top_x = span
-                        elif p[i] == 'recall':
-                            if p[i] in row and 'sentence recall' not in row and 'recall span' not in row and 'sentence recall span' not in row:
-                                if float(row.split(' ')[-1]) > top:
-                                    top = float(row.split(' ')[-1])
-                                    top_x = span
-                        else:
-                            if p[i] in row:
-                                if float(row.split(' ')[-1]) > top:
-                                    top = float(row.split(' ')[-1])
-                                    top_x = span
+                        if p[i] == row.split(':')[0]:
+                            if float(row.split(' ')[-1]) > top:
+                                top = float(row.split(' ')[-1])
+                                top_x = span
             f.close()
 
             print(p[i] + ' ' + measure + ' ' + lang)
