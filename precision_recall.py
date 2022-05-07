@@ -23,14 +23,8 @@ def spanner(d):
 
 y = open('results.txt', 'w')
 
-comet_ch = []
-comet_base = []
-ref = []
-
 for l in ['fr', 'ja', 'zh_cn']:
-# for l in ['ja']:
     for m in ['comet.', 'prism.', 'tedref.']:
-    # for m in ['tedref.']:
         thres = []
         if m == 'comet.':
             thres = [0.0, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19]
@@ -212,7 +206,6 @@ for l in ['fr', 'ja', 'zh_cn']:
             # by token
             # precision
             # (correct)/all labeled as correct
-            # print('precision: ', correct_elided_count/labeled_correct_count)
             try:
                 y.write('precision: ' + str(correct_elided_count/labeled_correct_count) + '\n')
             except:
@@ -221,13 +214,10 @@ for l in ['fr', 'ja', 'zh_cn']:
             # recall
             # (correct)/all that should have been labeled correct
             try:
-                # print('recall: ', correct_elided_count/actual_elided_count)
                 y.write('recall: ' + str(correct_elided_count/actual_elided_count) + '\n')
             except:
                 pass
 
-            # print('sentence precision: ', len(correct_elided)/len(labeled_correct))
-            # print('sentence recall: ', len(correct_elided)/len(actual_elided))
             try:
                 y.write('sentence precision: ' + str(len(correct_elided)/len(labeled_correct)) + '\n')
             except:
@@ -237,9 +227,6 @@ for l in ['fr', 'ja', 'zh_cn']:
                 y.write('sentence recall: ' + str(len(correct_elided)/len(actual_elided)) + '\n')
             except:
                 pass
-
-            # print('labeled', labeled_correct)
-            # print('gt ', actual_elided)
 
             # span precision and recall
             correct_elided_span = {}
@@ -268,7 +255,6 @@ for l in ['fr', 'ja', 'zh_cn']:
 
             # precision
             # (correct)/all labeled as correct
-            # print('precision span: ', correct_elided_span_count/labeled_correct_span_count)
             try:
                 y.write('precision span: ' + str(correct_elided_span_count/labeled_correct_span_count) + '\n')
             except:
@@ -277,13 +263,10 @@ for l in ['fr', 'ja', 'zh_cn']:
             # recall
             # (correct)/all that should have been labeled correct
             try:
-                # print('recall span: ', correct_elided_span_count/actual_elided_span_count)
                 y.write('recall span: ' + str(correct_elided_span_count/actual_elided_span_count) + '\n')
             except:
                 pass
 
-            # print('sentence precision span: ', len(correct_elided_span)/len(labeled_correct_span))
-            # print('sentence recall span: ', len(correct_elided_span)/len(actual_elided_span))
             try:
                 y.write('sentence precision span: ' + str(len(correct_elided_span)/len(labeled_correct_span)) + '\n')
             except:
@@ -338,7 +321,3 @@ for l in ['fr', 'ja', 'zh_cn']:
             #     f.write(' '.join(model) + '\n')
 
             #     f.write('\n')
-
-print('chinese', comet_ch)
-print('baseline', comet_base)
-print('ref', ref)
