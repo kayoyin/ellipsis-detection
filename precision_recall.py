@@ -171,12 +171,6 @@ for l in ['fr', 'ja', 'zh_cn']:
             labeled_correct_span = spanner(labeled_correct)
             actual_elided_span = spanner(actual_elided)
 
-            if m == 'comet.':
-                comet_ch = labeled_correct.copy()
-            else:
-                comet_base = labeled_correct.copy()
-            ref = actual_elided
-
             correct_elided = {}
             for key in labeled_correct.keys():
                 if key in actual_elided:
@@ -276,48 +270,3 @@ for l in ['fr', 'ja', 'zh_cn']:
                 y.write('sentence recall span: ' + str(len(correct_elided_span)/len(actual_elided_span)) + '\n')
             except:
                 pass
-
-            # create file
-            # f = open('check_file.txt', 'w')
-            # for key in labeled_correct.keys():
-            #     if key not in correct_elided.keys():
-            #         f.write(df['English sentence'][key] + '\n')
-            #         f.write(tokens[key] + '\n')
-
-            #         f.write('. '*len(tokens[key]) + '\n')
-
-            #         model = (['.']*len(tokens[key])).copy()
-            #         for i in range(len(labeled_correct[key])):
-            #             model[labeled_correct[key][i]] = 'x'
-            #         f.write(' '.join(model) + '\n')
-
-            #         f.write('\n')
-
-            # for key in actual_elided.keys():
-            #     if key not in correct_elided.keys():
-            #         f.write(df['English sentence'][key] + '\n')
-            #         f.write(tokens[key] + '\n')
-
-            #         model = (['.']*len(tokens[key])).copy()
-            #         for i in range(len(actual_elided[key])):
-            #             model[actual_elided[key][i]] = 'x'
-            #         f.write(' '.join(model) + '\n')
-
-            #         f.write('. '*len(tokens[key]) + '\n')
-            #         f.write('\n')
-
-            # for key in correct_elided.keys():
-            #     f.write(df['English sentence'][key] + '\n')
-            #     f.write(tokens[key] + '\n')
-
-            #     model = (['.']*len(tokens[key])).copy()
-            #     for i in range(len(actual_elided[key])):
-            #         model[actual_elided[key][i]] = 'x'
-            #     f.write(' '.join(model) + '\n')
-                
-            #     model = (['.']*len(tokens[key])).copy()
-            #     for i in range(len(labeled_correct[key])):
-            #         model[labeled_correct[key][i]] = 'x'
-            #     f.write(' '.join(model) + '\n')
-
-            #     f.write('\n')
